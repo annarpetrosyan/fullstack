@@ -1,0 +1,28 @@
+{
+  "name": "fullstack",
+  "version": "1.0.0",
+  "description": "fullstack with Angular application (learning)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "server": "nodemon index"
+  },
+  "keywords": [
+    "express",
+    "angular"
+  ],
+  "author": "Anna R Petrosyan <anna.r.petrosyan@synisys.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "body-parser": "^1.18.3",
+    "jsonwebtoken": "^8.3.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.4",
+    "morgan": "^1.9.0",
+    "mongoose":"^5.2.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}
