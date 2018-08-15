@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../modules/User');
+const keys = require('../config/keys');
 
 module.exports.login = async function (req, res) {
     const candidate = await User.findOne({email: req.body.email});
@@ -9,10 +11,13 @@ module.exports.login = async function (req, res) {
         const passwordResult = bcrypt.compareSync(req.body.password, candidate.password);
         if(passwordResult){
         // Generate token
-        const token = '';
+        const token = jwt.sign({
+           email: candidate.email,
+           userId: candidate._id
+        },keys.jwt, {expiresIn: 60*60});
 
         res.status(200).json({
-            token: token
+            token: `Bearer ${token}`
         })
         }else {
             // passwords was different
@@ -30,7 +35,7 @@ module.exports.login = async function (req, res) {
 
 module.exports.register = async function(req, res) {
 
-    const candidate = await User.findOne({email: req.body.email})
+    const candidate = await User.findOne({email: req.body.email});
 
     if (candidate) {
         // User exists, bring error about it
@@ -39,15 +44,15 @@ module.exports.register = async function(req, res) {
         })
     }else {
         // Create account
-        const salt = bcrypt.genSaltSync(10)
-        const password = req.body.password
+        const salt = bcrypt.genSaltSync(10);
+        const password = req.body.password;
 
         const user = new User({
             email: req.body.email,
             password: bcrypt.hashSync(password, salt)
-        })
+        });
         try{
-            await user.save()
+            await user.save();
             res.status(201).json(user)
         }catch (e) {
             //
