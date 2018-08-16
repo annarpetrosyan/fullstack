@@ -21,6 +21,14 @@ mongoose.connect(keys.MONGO_URI)
 // app.use(cors());
 // app.use(bodyParser.urlencoded({extended: true}));
 // app.use(bodyParser.json());
+app.use(passport.initialize());
+require('./middleware/passport')(passport);
+
+app.use(require('morgan')('dev'));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(require('cors')());
+
 
 
 app.use('/api/auth', authRoutes);
